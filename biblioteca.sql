@@ -138,8 +138,7 @@ WHERE nacimiento > 1970;
 
 --REQUERIMIENTO C
 
-SELECT libros.titulo, COUNT(libros.titulo)
-AS veces_prestadas
+SELECT libros.titulo, COUNT(libros.titulo) AS veces_prestadas
 FROM libros
 JOIN prestamos
 ON libros.isbn = prestamos.libro_isbn
@@ -149,3 +148,20 @@ DESC LIMIT 1;
 
 --REQUERIMIENTO D
 
+SELECT socios.nombre, socios.apellido, libros.titulo, ((prestamos.fecha_devolucion - prestamos.fecha_prestamo)-7)*100 AS multa
+FROM socios
+JOIN prestamos
+ON socios.rut = prestamos.socio_rut
+JOIN libros
+ON libros.isbn = prestamos.libro_isbn
+WHERE (prestamos.fecha_devolucion - prestamos.fecha_prestamo) > 7 and libros.dias_prestamo = 7
+
+UNION
+
+SELECT socios.nombre, socios.apellido, libros.titulo, ((prestamos.fecha_devolucion - prestamos.fecha_prestamo)-14)*100 AS multa
+FROM socios
+JOIN prestamos
+ON socios.rut = prestamos.socio_rut
+JOIN libros
+ON libros.isbn = prestamos.libro_isbn
+WHERE (prestamos.fecha_devolucion - prestamos.fecha_prestamo) > 14 and libros.dias_prestamo = 14;
