@@ -126,10 +126,26 @@ VALUES
 
 --REQUERIMIENTO A
 
-select titulo from libros where num_pags < 300;
+SELECT titulo
+FROM libros
+WHERE num_pags < 300;
 
 --REQUERIMIENTO B
 
-select nombre, apellido from autores where nacimiento > 1970;
+SELECT nombre, apellido
+FROM autores
+WHERE nacimiento > 1970;
 
 --REQUERIMIENTO C
+
+SELECT libros.titulo, COUNT(libros.titulo)
+AS veces_prestadas
+FROM libros
+JOIN prestamos
+ON libros.isbn = prestamos.libro_isbn
+GROUP BY libros.titulo
+ORDER BY veces_prestadas
+DESC LIMIT 1;
+
+--REQUERIMIENTO D
+
